@@ -1,3 +1,7 @@
+// Fazar Budiman (1217050056)
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 class Manusia {
@@ -7,51 +11,52 @@ class Manusia {
 
 class LembagaKursus {
     int minimumPenghasilan = 200000;
+    ArrayList <String> skill = new ArrayList <String> ();
+    ArrayList <String> skillDanMotivasi = new ArrayList <String> ();
+    Hashtable <String, ArrayList> dataKursus = new Hashtable<>();
 
-    String klasifikasiKursus(String nama, int penghasilan){
+    void klasifikasiKursus(String nama, int penghasilan){
         if (penghasilan <= this.minimumPenghasilan) {
-            return nama + " => Pelatihan Skill dan Motivasi";
+            skillDanMotivasi.add(nama);
         } else {
-            return nama + " => Pelatihan Skill";
+            skill.add(nama);
         }
+        Collections.sort(skill);
+        Collections.sort(skillDanMotivasi);
+        dataKursus.put("Pelatihan Skill", skill);
+        dataKursus.put("Pelatihan Skill dan Motivasi", skillDanMotivasi);
     }
 
-    String[]  pendataan(){
+    void pendataan(){
         System.out.println("Pendataan Pelatihan Warga Desa Mawar");
         System.out.println("=============================");
         Scanner in = new Scanner(System.in);
 
         System.out.print("Jumlah warga = ");
         int jumlah = in.nextInt();
-        
-        String[] data = new String[jumlah];
-        for (int i = 0; i < data.length; i++) {
+
+        for (int i = 0; i < jumlah; i++) {
             Manusia warga  = new Manusia();
             System.out.print((i + 1) + ". Nama : ");
             warga.nama = in.next();
-            System.out.print("   Penghasilan : ");
+            System.out.print("   Penghasilan (bulan) : ");
             warga.penghasilan = in.nextInt();
-            data[i] = klasifikasiKursus(warga.nama, warga.penghasilan);
+            klasifikasiKursus(warga.nama, warga.penghasilan);
         }
-        return data;
     }
 
-    void Pengumuman(String[] hasil){
+    void Pengumuman(){
         System.out.println("\nPENGUMUMAN PELATIHAN WARGA DESA MAWAR");
         System.out.println("========================================");
-        for (int i = 0; i < hasil.length; i++) {
-            System.out.println((i + 1) + ". " + hasil[i]);
-        }
+        System.out.println("Pelatihan Skill => " + dataKursus.get("Pelatihan Skill"));
+        System.out.println("Pelatihan Skill dan Motivasi => " + dataKursus.get("Pelatihan Skill dan Motivasi"));
     }
 }
-
-
-
 
 public class Kursus {
     public static void main(String[] args) {
         LembagaKursus lembagaKursus = new LembagaKursus();
-        String[] data = lembagaKursus.pendataan();
-        lembagaKursus.Pengumuman(data);
+        lembagaKursus.pendataan();
+        lembagaKursus.Pengumuman();
     }
 }
